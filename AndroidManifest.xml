@@ -2,13 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.linkedin.avandra">
 
-  <uses-sdk android:minSdkVersion="19"/>
+  <uses-sdk android:minSdkVersion="18"/>
 
   <application
       android:icon="@drawable/icon"
       android:label="@string/app_name">
     <activity
-        android:name="com.linkedin.avandra.Launcher"
+        android:name=".MainActivity"
         android:label="Avandra">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

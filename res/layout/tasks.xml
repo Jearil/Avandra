@@ -21,6 +21,12 @@
         android:layout_height="wrap_content"
         android:text="@string/add"/>
   </LinearLayout>
+  <ImageView
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/imageView"
+      android:src="@color/blue_divider"
+      android:layout_marginBottom="@dimen/margin_above_lists"/>
   <ListView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

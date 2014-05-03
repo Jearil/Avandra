@@ -7,17 +7,16 @@ import android.widget.EditText;
 
 
 /**
- * Created by Colin on 4/18/2014.
+ * Created by Colin on 5/3/2014.
  */
 public class TaskListViewHolder
 {
-
-  public EditText textEntry;
-  public Button add;
+  public EditText newListName;
+  public Button addNewList;
 
   public TaskListViewHolder(View view)
   {
-    textEntry = (EditText) view.findViewById(R.id.new_task_entry);
-    add = (Button) view.findViewById(R.id.add_task);
+    newListName = (EditText) view.findViewById(R.id.add_task_list);
+    addNewList = (Button) view.findViewById(R.id.create_list);
   }
 }

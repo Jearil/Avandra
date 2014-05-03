@@ -4,21 +4,29 @@ package com.linkedin.avandra.model;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.util.Log;
 
 
 /**
+ * An AsyncTaskLoader that's used to get Task data from the database and load it into the adapter for display.
+ *
  * Created by Colin on 4/18/2014.
  */
 public class AsyncDBQuery extends AsyncTaskLoader<Cursor>
 {
-  private TaskDBHelper.query option;
+  private static final String LIST_ID = "list_id";
+  private static final String TAG = "AsyncDB";
 
-  private AsyncDBQuery(Context context, TaskDBHelper.query option)
+  private TaskDBHelper.query option;
+  private Bundle extras;
+
+  private AsyncDBQuery(Context context, TaskDBHelper.query option, Bundle extras)
   {
     super(context);
     this.option = option;
-    Log.i("ASYNC_DB", "New AsyncDBQuery Created");
+    this.extras = extras;
+    Log.i(TAG, "New AsyncDBQuery Created");
   }
 
   @Override
@@ -27,29 +35,43 @@ public class AsyncDBQuery extends AsyncTaskLoader<Cursor>
     TaskDBHelper helper = new TaskDBHelper(getContext());
     switch(option) {
       case ALLTASKLISTS:
-        Log.i("ASYNC", "Getting task list");
+        Log.i(TAG, "Getting task list");
         return helper.getTaskList();
+      case TASKSOFLIST:
+        Log.i(TAG, "Getting tasks of a list");
+        int listId = extras.getInt(LIST_ID);
+        return helper.getTasks(listId);
       default:
-        Log.e("ASYNC", "Unknown task to get!");
+        Log.e(TAG, "Unknown task to get!");
         return null;
     }
   }
 
   public static class Builder {
     private TaskDBHelper.query option;
+    private Bundle extras;
 
     public Builder()
     {
-      option = TaskDBHelper.query.ALLTASKLISTS;
+      option = TaskDBHelper.query.TASKSOFLIST;
+      extras = new Bundle();
+    }
+
+    public Builder allTasksForList(int listId) {
+      extras.clear();
+      option = TaskDBHelper.query.TASKSOFLIST;
+      extras.putInt(LIST_ID, listId);
+      return this;
     }
 
     public Builder allTaskLists() {
+      extras.clear();
       option = TaskDBHelper.query.ALLTASKLISTS;
       return this;
     }
 
     public AsyncDBQuery build(Context context) {
-      return new AsyncDBQuery(context, option);
+      return new AsyncDBQuery(context, option, extras);
     }
   }
 }
