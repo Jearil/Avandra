@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.linkedin.avandra">
 
-  <uses-sdk android:minSdkVersion="18"/>
+  <uses-sdk android:minSdkVersion="17"/>
 
   <application
       android:icon="@drawable/icon"
