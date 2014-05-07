@@ -102,6 +102,12 @@ public class TaskDBHelper extends SQLiteOpenHelper
     Log.i("TASK_DB", "Inserted record " + id);
   }
 
+  public void removeTask(int taskId) {
+    String where = BaseColumns._ID + "=?";
+    SQLiteDatabase db = getWritableDatabase();
+    db.delete(TASK_TABLE_NAME, where, new String[]{Integer.toString(taskId)});
+  }
+
   public void addNewTaskList(String taskList) {
     ContentValues insertValue = new ContentValues();
     insertValue.put(LIST_NAME, taskList);

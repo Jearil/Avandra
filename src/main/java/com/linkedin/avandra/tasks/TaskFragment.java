@@ -1,15 +1,19 @@
-package com.linkedin.avandra;
+package com.linkedin.avandra.tasks;
 
 import android.app.ListFragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import com.google.swipedismess.SwipeDismissListViewTouchListener;
+import com.linkedin.avandra.R;
 import com.linkedin.avandra.model.AsyncDBQuery;
 import com.linkedin.avandra.model.TaskDBHelper;
 
@@ -47,8 +51,6 @@ public class TaskFragment extends ListFragment implements LoaderManager.LoaderCa
     viewHolder = new TaskViewHolder(view);
     view.setTag(viewHolder);
 
-    final LoaderManager.LoaderCallbacks<Cursor> callback = this;
-
     viewHolder.add.setOnClickListener(new View.OnClickListener()
     {
       @Override
@@ -56,14 +58,48 @@ public class TaskFragment extends ListFragment implements LoaderManager.LoaderCa
       {
         String text = viewHolder.textEntry.getText().toString();
         if (text != null && !text.equals("")) {
+          //TODO: This should not be done on the main thread.
           TaskDBHelper helper = new TaskDBHelper(getActivity());
           helper.addNewTask(text, listId); //todo: link up to tasklist
           viewHolder.textEntry.setText("");
-          getLoaderManager().restartLoader(0, null, callback).forceLoad();
+          reloadData();
         }
       }
     });
+
+    ListView listView = (ListView) view.findViewById(android.R.id.list);
+    SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(
+        listView,
+        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+          @Override
+          public boolean canDismiss(int position)
+          {
+            return true;
+          }
+
+          @Override
+          public void onDismiss(ListView listView, int[] reverseSortedPositions)
+          {
+            for (int position : reverseSortedPositions) {
+              removeTask(position);
+            }
+          }
+        }
+    );
+    listView.setOnTouchListener(touchListener);
+    listView.setOnScrollListener(touchListener.makeScrollListener());
     return view;
+  }
+
+  public void reloadData() {
+    getLoaderManager().restartLoader(0, null, this).forceLoad();
+  }
+
+  public void removeTask(int position) {
+    //TODO: This should not be done on the main thread.
+    TaskDBHelper helper = new TaskDBHelper(getActivity());
+    helper.removeTask(getTaskIdForPosition(position));
+    reloadData();
   }
 
   @Override
@@ -102,6 +138,12 @@ public class TaskFragment extends ListFragment implements LoaderManager.LoaderCa
 
   public void updateListId(int listId) {
     this.listId = listId;
-    getLoaderManager().restartLoader(0, null, this).forceLoad();
+    reloadData();
+  }
+
+  private int getTaskIdForPosition(int position) {
+    Cursor cursor = adapter.getCursor();
+    cursor.moveToPosition(position);
+    return cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
   }
 }

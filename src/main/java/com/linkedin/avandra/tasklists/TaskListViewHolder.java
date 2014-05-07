@@ -1,13 +1,15 @@
-package com.linkedin.avandra;
+package com.linkedin.avandra.tasklists;
 
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.linkedin.avandra.R;
 
 
 /**
- * Created by Colin on 5/3/2014.
+ * Holds the inner view for the task list layout. Contains a reference to the text entry for adding a new list along
+ * with the button.
  */
 public class TaskListViewHolder
 {

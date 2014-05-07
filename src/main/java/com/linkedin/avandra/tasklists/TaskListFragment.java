@@ -1,4 +1,4 @@
-package com.linkedin.avandra;
+package com.linkedin.avandra.tasklists;
 
 
 import android.app.ListFragment;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import com.linkedin.avandra.R;
 import com.linkedin.avandra.model.AsyncDBQuery;
 import com.linkedin.avandra.model.TaskDBHelper;
 

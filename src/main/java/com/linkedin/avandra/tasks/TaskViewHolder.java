@@ -1,13 +1,15 @@
-package com.linkedin.avandra;
+package com.linkedin.avandra.tasks;
 
 
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import com.linkedin.avandra.R;
 
 
 /**
- * Created by Colin on 4/18/2014.
+ * Holds the inner view for the task layout. Contains a reference to the text entry for adding a new task along with
+ * the button.
  */
 public class TaskViewHolder
 {
