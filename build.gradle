@@ -49,3 +49,11 @@ android {
         androidTest.setRoot('src/test')
     }
 }
+
+apply plugin: 'idea'
+
+idea {
+    module {
+        testOutputDir = file('build/test-classes')
+    }
+}
