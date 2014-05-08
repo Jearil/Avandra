@@ -102,12 +102,20 @@ public class TaskDBHelper extends SQLiteOpenHelper
     Log.i("TASK_DB", "Inserted record " + id);
   }
 
+    /**
+     * removes the specified task from the database. One should change the display to reflect this change afterwards.
+     * @param taskId to remove.
+     */
   public void removeTask(int taskId) {
     String where = BaseColumns._ID + "=?";
     SQLiteDatabase db = getWritableDatabase();
     db.delete(TASK_TABLE_NAME, where, new String[]{Integer.toString(taskId)});
   }
 
+    /**
+     * Add a new list that can contain tasks.
+     * @param taskList is the name to call the new list.
+     */
   public void addNewTaskList(String taskList) {
     ContentValues insertValue = new ContentValues();
     insertValue.put(LIST_NAME, taskList);
@@ -115,11 +123,11 @@ public class TaskDBHelper extends SQLiteOpenHelper
     Log.i(TAG, "Inserted list " + id);
   }
 
-  public Cursor query(String DBTable, String[] columns) {
+  private Cursor query(String DBTable, String[] columns) {
     return query(DBTable, columns, null, null);
   }
 
-  public Cursor query(String DBTable, String[] columns, String selection, String[] selectionArgs) {
+  private Cursor query(String DBTable, String[] columns, String selection, String[] selectionArgs) {
     SQLiteDatabase db = getReadableDatabase();
     return db.query(DBTable, columns, selection, selectionArgs, null, null, null, null);
   }

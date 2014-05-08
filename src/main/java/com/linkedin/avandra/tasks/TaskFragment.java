@@ -19,7 +19,7 @@ import com.linkedin.avandra.model.TaskDBHelper;
 
 
 /**
- * Fragment for showing the lsit of tasks.
+ * Fragment for showing the list of tasks.
  */
 public class TaskFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
