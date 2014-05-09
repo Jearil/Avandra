@@ -2,8 +2,10 @@ package com.linkedin.avandra;
 
 import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import com.linkedin.avandra.services.MetricsIntentService;
 import com.linkedin.avandra.tasklists.TaskListFragment;
 import com.linkedin.avandra.tasks.TaskFragment;
 
@@ -75,7 +77,7 @@ public class MainActivity extends Activity implements TaskListFragment.OnListSel
 
       FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-      transaction.replace(R.id.fragment_container, newTaskFragment);
+      transaction.replace(R.id.fragment_container, newTaskFragment, TaskFragment.TAG);
       transaction.addToBackStack(null);
       transaction.commit();
     }
@@ -84,5 +86,9 @@ public class MainActivity extends Activity implements TaskListFragment.OnListSel
     SharedPreferences preferences = getPreferences(MODE_PRIVATE);
     SharedPreferences.Editor editor = preferences.edit();
     editor.putInt(STORED_LAST_LIST, listId).commit();
+
+      Intent metricsService = new Intent(this, MetricsIntentService.class);
+      metricsService.putExtra(MetricsIntentService.TAG, MetricsIntentService.LIST_TAP);
+    startService(metricsService);
   }
 }
